@@ -49,7 +49,7 @@ module.exports = (app) => {
     });
 
     app.get('/livros/form', function(req, res) {
-        res.marko(require('../views/livros/form/form.marko'));
+        res.marko(require('../views/livros/form/form.marko'), { livro: {} });
     });
 
     app.post('/livros', function(req, res) {
@@ -62,15 +62,24 @@ module.exports = (app) => {
 
     });
 
-    app.get('/livros/:id', function(req, res) {
+    app.put('/livros', function(req, res) {
+        console.log(req.body);
+
+        const livroDao = new LivroDao(db);
+        livroDao.atualizaPorId(req.body)
+            .then(res.redirect('/livros'))
+            .catch(error => console.log(error));
+
+    });
+
+    app.get('/livros/form/:id', function(req, res) {
         var id = req.params.id;
 
         const livroDao = new LivroDao(db);
 
         livroDao.buscaPorId(id)
-            .then(value => {
-                console.log(value);
-                res.send(value);
+            .then(livro => {
+                res.marko(require('../views/livros/form/form.marko'), { livro: livro })
             })
             .catch(error => {
                 console.log('Erro na busca por id : ' + error);
