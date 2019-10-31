@@ -29,7 +29,7 @@ class LivroDao {
                         return reject('Erro na consulta por id');
                     }
                     console.log(row);
-                    resolve(row);
+                    return resolve(row);
                 })
         });
     }
@@ -44,7 +44,7 @@ class LivroDao {
                         console.log(err);
                         return reject('Erro na deleção por id');
                     }
-                    resolve('Arquivo deletado');
+                    return resolve('Arquivo deletado');
                 })
         });
     }

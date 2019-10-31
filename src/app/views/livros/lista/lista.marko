@@ -3,17 +3,24 @@
              </head>
              <body>
                  <h1> Livros </h1>
-                 <table>
+                 <table id="livros">
                     <tr>
                         <td>ID</td>
                         <td>Título</td>
+                        <td>Preço</td>
+                        <td>Editar</td>
+                        <td>Remover</td>
                     </tr>
-                    <for (livro in data.livros )>
-                    <tr>
+                    <for|livro| of=data.livros>
+                    <tr id=`livro_${livro.id}`>
                         <td>${livro.id}</td>
                         <td>${livro.titulo}</td>
+                        <td>${livro.preco}</td>
+                        <td><a href="#">Editar</a></td>
+                        <td><a href="#" data-ref="${livro.id}" data-type="remove">Remover</a></td>
                     </tr>
                     </for>
                  </table>
+                 <script src="/estatico/js/remove-livro.js"> </script>
              </body>
          </html>
