@@ -47,4 +47,63 @@ module.exports = (app) => {
 
 
     });
+
+    app.get('/livros/form', function(req, res) {
+        res.marko(require('../views/livros/form/form.marko'));
+    });
+
+    app.post('/livros', function(req, res) {
+        console.log(req.body);
+
+        const livroDao = new LivroDao(db);
+        livroDao.adiciona(req.body)
+            .then(res.redirect('/livros'))
+            .catch(error => console.log(error));
+
+    });
+
+    app.get('/livros/:id', function(req, res) {
+        var id = req.params.id;
+
+        const livroDao = new LivroDao(db);
+
+        livroDao.buscaPorId(id)
+            .then(value => {
+                console.log(value);
+                res.send(value);
+            })
+            .catch(error => {
+                console.log('Erro na busca por id : ' + error);
+                res.send(error);
+            })
+
+    });
+
+    app.post('/livros/atualiza', function(req, res) {
+
+        const livroDao = new LivroDao(db);
+
+        livroDao.atualizaPorId(req.body)
+            .then(res.redirect('/livros'))
+            .catch(error => {
+                console.log('Erro na atualizao : ' + error);
+                res.send(error);
+            })
+
+    });
+
+    app.delete('/livros/:id', function(req, res) {
+        var id = req.params.id;
+
+        const livroDao = new LivroDao(db);
+
+        livroDao.removePorId(id)
+            .then(res.send('Arquivo deletado'))
+            .catch(error => {
+                console.log(error);
+                res.send('Erro na deleção : ' + error);
+            });
+
+    });
+
 }
