@@ -1,8 +1,12 @@
+const { check, validationResult } = require('express-validator');
+
 const LivroController = require('../controller/livroController');
 const livroController = new LivroController();
 
 const BaseController = require('../controller/baseController');
 const baseController = new BaseController();
+
+const Livro = require('../modelos/livro');
 
 module.exports = (app) => {
 
@@ -10,17 +14,18 @@ module.exports = (app) => {
 
     app.get('/', baseController.home());
 
-    app.get(rotasLivro.lista, livroController.lista());
+    app.get(rotasLivro.cadastro, Livro.validacoes(),
+        livroController.formularioCadastro()
+    );
 
-    app.get(rotasLivro.cadastro, livroController.formularioCadastro());
+    app.route(rotasLivro.lista)
+        .get(livroController.lista())
+        .post(Livro.validacoes(), livroController.cadastra())
+        .put(Livro.validacoes(), livroController.edita());
 
-    app.post(rotasLivro.lista, livroController.adicionar());
+    app.get(rotasLivro.edicao, Livro.validacoes(), livroController.formularioEdicao());
 
-    app.put(rotasLivro.lista, livroController.edita());
-
-    app.get(rotasLivro.edicao, livroController.formularioEdicao());
-
-    app.post(rotasLivro.atualizacao, livroController.autalizaoPorPost());
+    app.post(rotasLivro.atualizacao, Livro.validacoes(), livroController.autalizaoPorPost());
 
     app.delete(rotasLivro.delecao, livroController.remove());
 

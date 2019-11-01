@@ -1,3 +1,5 @@
+const { check, validationResult } = require('express-validator');
+
 const LivroDao = require('../infra/livro-dao');
 
 const db = require('../../config/database');
@@ -76,6 +78,17 @@ class LivroController {
     edita() {
         return function(req, res) {
             console.log(req.body);
+
+            const erros = validationResult(req);
+
+            if (!erros.isEmpty()) {
+                return res.marko(
+                    require('../views/livros/form/form.marko'), {
+                        livro: req.body,
+                        errosValidacao: erros.array()
+                    }
+                );
+            }
 
             const livroDao = new LivroDao(db);
             livroDao.atualizaPorId(req.body)
