@@ -4,6 +4,7 @@ const LivroDao = require('../infra/livro-dao');
 
 const db = require('../../config/database');
 
+const templates = require("../views/template")
 
 class LivroController {
 
@@ -36,7 +37,7 @@ class LivroController {
 
             livroDao.lista()
                 .then(livros => res.marko(
-                    require('../views/livros/lista/lista.marko'), {
+                    templates.livros.lista, {
                         livros: livros
                     }
                 ))
@@ -52,7 +53,7 @@ class LivroController {
     formularioCadastro() {
         return function(req, resp) {
             resp.marko(
-                require('../views/livros/form/form.marko'), { livro: {} }
+                templates.livros.form, { livro: {} }
             );
         };
     }
@@ -65,7 +66,8 @@ class LivroController {
 
             livroDao.buscaPorId(id)
                 .then(livro => {
-                    res.marko(require('../views/livros/form/form.marko'), { livro: livro })
+                    //res.marko(require('../views/livros/form/form.marko'), { livro: livro })
+                    res.marko(templates.livros.form, { livro: livro })
                 })
                 .catch(error => {
                     console.log('Erro na busca por id : ' + error);
@@ -83,7 +85,7 @@ class LivroController {
 
             if (!erros.isEmpty()) {
                 return res.marko(
-                    require('../views/livros/form/form.marko'), {
+                    templates.livros.form, {
                         livro: req.body,
                         errosValidacao: erros.array()
                     }
@@ -121,7 +123,7 @@ class LivroController {
 
             if (!erros.isEmpty()) {
                 return res.marko(
-                    require('../views/livros/form/form.marko'), {
+                    templates.livros.form, {
                         livro: req.body,
                         errosValidacao: erros.array()
                     }
