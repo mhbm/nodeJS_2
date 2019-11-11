@@ -1,5 +1,4 @@
 {
-    "name": "nodeJS",
     "version": "1.0.0",
     "description": "Criando um projeto em NODE",
     "main": "server.js",
