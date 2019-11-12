@@ -2,6 +2,13 @@ const templates = require("../views/template")
 
 class BaseController {
 
+    static rotas() {
+        return {
+            home: '/',
+            login: '/login'
+        }
+    }
+
     home() {
         
         return function(req, resp) {
@@ -10,6 +17,20 @@ class BaseController {
                 templates.livros.home
             );
         };
+    }
+
+    login() {
+        return function(req,resp) {
+            resp.marko(
+                templates.base.login
+            );
+        }
+    }
+
+    efetuaLogin() {
+        return function (req,resp) {
+            
+        }
     }
 }
 
